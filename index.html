@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>charan.github.io</title>
+    <meta name="description" content="Charan Nanduri — electrical engineer at Milwaukee Tool, based in Chicago.">
+    <title>charan-xyz — -zsh</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,19 +22,20 @@
                     <span class="window-button minimize"></span>
                     <span class="window-button maximize"></span>
                 </div>
-                <div class="title-bar">charan.xyz — zsh</div>
+                <div class="title-bar">guest@charan-xyz — -zsh — 80×24</div>
             </div>
             <div id="output-container">
-                <div id="output">
+                <div id="output"></div>
+                <div id="input-line" class="input-line">
+                    <span class="prompt">guest@charan-xyz ~ %</span>
+                    <span id="input-wrap">
+                        <span id="mirror"><span id="cursor">&nbsp;</span></span>
+                        <input id="input" class="cmdline" autofocus autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" />
+                    </span>
                 </div>
             </div>
-            <div id="output"></div>
-            <div id="input-line" class="input-line">
-                <div class="prompt">user@charan.xyz:~$</div>
-                <div><input id="input" class="cmdline" autofocus /></div>
-            </div>
         </div>
-    </div>   
+    </div>
     <script src="script.js"></script>
 </body>
-</html> 
+</html>

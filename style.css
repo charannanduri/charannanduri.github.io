@@ -1,49 +1,49 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevents scrollbars if the content exceeds the viewport */
-    height: 100%; /* Full height of the viewport */
-    width: 100%; /* Full width of the viewport */
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
 }
 
 #desktop {
-    background-image: url('background.png'); /* Update with the correct path */
-    background-size: cover; /* Ensure the background covers the entire container */
-    background-position: center; /* Center the background image */
-    height: 100vh; /* Set to full viewport height */
-    width: 100vw; /* Set to full viewport width */
-    margin: 0; /* Remove any margins */
-    padding: 0; /* Remove any padding */
-    display: flex; /* Enables flexible layouts for children, like centering the terminal */
-    justify-content: center; /* Center children horizontally */
-    align-items: center; /* Center children vertically */
+    background-color: #1a1a1c;
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 #terminal {
-    /* position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); */ /* Centering handled by #desktop flex */
-    background-color: #000;
-    color: #fff;
-    font-family: 'Monaco', 'Consolas', 'Courier New', 'Lucida Console', monospace;
+    background-color: rgba(0, 0, 0, 0.96);
+    color: #f2f2f2;
+    font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.35;
     width: 60%;
     height: 60%;
-    border-radius: 5px;
+    min-width: 640px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     overflow: hidden;
 }
 
-
 .top-bar {
-    /* position: absolute; top: 0; left: 0; right: 0; */ /* Removed absolute positioning */
-    height: 24px; /* Keep fixed height for consistency */
-    background-color: #e1e1e1;
-    border-top-left-radius: 5px; /* Rounded corners on the top */
-    border-top-right-radius: 5px;
+    height: 26px;
+    background: linear-gradient(#3a3a3c, #2d2d2f);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: start; /* Align window buttons to the start (left) */
-    padding: 4px;
-    flex-shrink: 0; /* Prevent shrinking */
+    justify-content: start;
+    padding: 4px 8px;
+    flex-shrink: 0;
 }
 
 .window-buttons {
@@ -57,103 +57,128 @@ html, body {
     margin-right: 8px;
 }
 
-.window-button.close {
-    background-color: #ff5f56;
-}
-
-.window-button.minimize {
-    background-color: #ffbd2e;
-}
-
-.window-button.maximize {
-    background-color: #27c93f;
-}
+.window-button.close { background-color: #ff5f56; }
+.window-button.minimize { background-color: #ffbd2e; }
+.window-button.maximize { background-color: #27c93f; }
 
 .title-bar {
     flex-grow: 1;
     text-align: center;
-    color: #333; /* Dark text color for visibility */
+    color: #b7b7b9;
+    font-size: 12px;
+    /* keep centered despite the traffic lights on the left */
+    margin-right: 52px;
 }
-
-/* The rest of your styles remain unchanged */
 
 #output-container {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 20px; /* Consolidated padding here */
-    /* Add margin-top to account for top-bar height if needed, but flex should handle it */
+    padding: 8px 10px;
+    cursor: text;
 }
 
 #output-container::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
 }
 
 #output-container::-webkit-scrollbar-track {
-    background: #000;
+    background: transparent;
 }
 
 #output-container::-webkit-scrollbar-thumb {
     background: #555;
-    border-radius: 6px;
-    border: 3px solid #000;
+    border-radius: 5px;
+    border: 2px solid #000;
 }
 
-#output {
-    margin-bottom: 10px;
-    /* padding-top: 10px; */ /* Removed redundant padding */
+/* Every printed line keeps its whitespace so ASCII art lines up */
+.term-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 1.35em;
 }
 
-.cmdline {
-    background-color: #000; /* Set the background color to black */
-    color: #fff; /* Set the text color to white */
-    border: none; /* Removes the border */
-    outline: none; /* Removes the outline to match the terminal style */
-    padding: 0px 8px; /* Same as the terminal content for consistency */
-    font-family: 'Monaco', 'Consolas', 'Courier New', 'Lucida Console', monospace; /* Match the terminal font */
-    font-size: 14px; /* Adjust the size as needed to match the terminal */
-    width: calc(100% - 20px); /* Adjust width if necessary, considering padding */
+.term-line a {
+    color: #34d05e;
+    text-decoration: underline;
 }
 
+.prompt {
+    color: #f2f2f2;
+    white-space: pre;
+}
+
+/* The live prompt line flows right after the scrollback, like a real shell */
 .input-line {
-    /* position: absolute; bottom: 0; left: 0; */ /* Removed absolute positioning */
-    /* width: calc(100% - 40px); */ /* Width will be 100% of flex item */
-    width: 100%;
     display: flex;
-    align-items: center; /* Vertically align prompt and input */
-    padding: 4px 20px;
-    box-sizing: border-box;
-    flex-shrink: 0; /* Prevent shrinking */
+    align-items: baseline;
+    width: 100%;
 }
 
-.input-line > div:last-child {
-    flex-grow: 1; /* Allow the input container to grow */
+#input-wrap {
+    position: relative;
+    flex-grow: 1;
+    margin-left: 1ch;
+    min-height: 1.35em;
 }
 
-.input-line .cmdline {
-    width: 100%; /* Make input fill its container */
-    box-sizing: border-box; /* Include padding in width */
+/* Mirror renders the typed text + block cursor */
+#mirror {
+    white-space: pre-wrap;
+    word-break: break-all;
 }
 
-@keyframes blink {
+#cursor {
+    background-color: #f2f2f2;
+    color: #000;
+    animation: cursor-blink 1.1s step-end infinite;
+}
+
+@keyframes cursor-blink {
     50% {
-        border-color: transparent;
+        background-color: transparent;
+        color: #f2f2f2;
     }
 }
 
-input.cmdline:focus {
-    animation: blink 1s step-end infinite;
+/* Hollow cursor when the terminal doesn't have focus, like Terminal.app */
+#cursor.unfocused {
+    background-color: transparent;
+    color: #f2f2f2;
+    box-shadow: inset 0 0 0 1px #f2f2f2;
+    animation: none;
 }
 
-/* Welcome Overlay Styles */
+/* The real input sits invisibly on top so taps/clicks focus it natively */
+.cmdline {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    font: inherit;
+}
+
+::selection {
+    background: #4a4a4c;
+    color: #fff;
+}
+
+/* Welcome overlay ("desktop" text behind the window) */
 #welcome-overlay {
     position: absolute;
     top: 10%;
     left: 0;
     right: 0;
-    font-family: 'Monaco', 'Consolas', 'Courier New', 'Lucida Console', monospace;
+    font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
     z-index: 10;
     pointer-events: none;
-    height: 100px; /* Adjust if needed */
+    height: 100px;
 }
 
 #welcome-overlay p {
@@ -168,54 +193,37 @@ input.cmdline:focus {
     font-weight: bold;
     color: #cccccc;
     text-align: left;
-    opacity: 1; /* Start fully visible */
-    transition: opacity 0.8s ease-out; /* Add transition for fade */
+    opacity: 1;
+    transition: opacity 0.8s ease-out;
 }
 
 #welcome-overlay p.fade-out {
     opacity: 0;
-    pointer-events: none; /* Prevent interaction after fade */
+    pointer-events: none;
 }
 
-/* Responsive Design Adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     #terminal {
-        width: 95%; /* Increase width on smaller screens */
-        height: 85%; /* Increase height on smaller screens */
-        max-height: 80vh; /* Ensure it doesn't exceed viewport height */
+        width: 95%;
+        height: 85%;
+        min-width: 0;
+        max-height: 80vh;
     }
 
-    /* #welcome-overlay hidden */
-
-    #output-container {
-        padding: 15px;
-    }
-
-    .input-line {
-        /* width: calc(100% - 30px); */ /* Not needed, width is 100% */
-        padding: 8px 15px;
-    }
-
-    /* Improve touch targets */
-    .window-button {
-        height: 14px;
-        width: 14px;
-        margin-right: 10px;
-    }
-
-    .top-bar {
-        height: 28px;
-        padding: 6px;
+    /* No visible desktop on small screens — the overlay would sit on the terminal */
+    #welcome-overlay {
+        display: none;
     }
 }
 
 @media (max-width: 480px) {
     #terminal {
         width: 100%;
-        height: 100%; /* Make terminal full screen */
-        max-height: none; /* Override max-height */
+        height: 100%;
+        max-height: none;
         border-radius: 0;
-        box-shadow: none; /* Optional: remove shadow */
+        box-shadow: none;
     }
 
     .top-bar {
@@ -223,18 +231,6 @@ input.cmdline:focus {
         border-top-right-radius: 0;
     }
 
-    #terminal, .cmdline {
-        font-size: 14px; /* Slightly larger font for better readability */
-    }
-
-    .input-line {
-        padding: 10px 15px;
-        /* Width is already 100% */
-    }
-
-    /* #welcome-overlay hidden */
-
-    /* Hide window buttons */
     .window-buttons {
         display: none;
     }
@@ -242,30 +238,21 @@ input.cmdline:focus {
     .title-bar {
         text-align: left;
         padding-left: 10px;
+        margin-right: 0;
     }
 }
 
-/* Touch-specific optimizations */
 @media (hover: none) {
-    .window-button {
-        opacity: 0.7;
-    }
-
-    .cmdline {
-        font-size: 16px; /* Larger font for touch input */
-        padding: 8px;
-    }
-
     #output-container {
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        -webkit-overflow-scrolling: touch;
     }
 }
 
-/* Landscape mode optimizations */
 @media (max-height: 500px) and (orientation: landscape) {
     #terminal {
         height: 95%;
         width: 90%;
+        min-width: 0;
     }
 
     #welcome-overlay {
@@ -276,5 +263,3 @@ input.cmdline:focus {
         font-size: 1.2em;
     }
 }
-
-
