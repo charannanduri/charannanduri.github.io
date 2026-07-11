@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 // Command History
 let commandHistory = [];
 let historyIndex = -1; // Initialize history index
+let resumeViewed = false;
 
 const inputElement = document.getElementById('input');
 
@@ -123,8 +124,6 @@ function processCommand(command) {
     const output = document.getElementById('output');
     // Display the command line itself before processing/typing output
     appendToOutput(command, command);
-
-    let resumeViewed = false; // Assuming this should be scoped or managed differently if persistence is needed
 
     switch (command.toLowerCase()) {
         case 'help':
@@ -189,15 +188,19 @@ function processCommand(command) {
             break;
         case 'projects':
             if(resumeViewed){
-                const projectsContent = [
-                    "Projects:",
-                    "",
-                    "1. Capacitive Touch Sensing and Design Implementation - ",
-                    "Worked within the Outdoor Power Equipment organization at Milwaukee Tool. Developed a clean sheet schematic, PCB layout design, and wrote C firmware for a new sensor IC.",
-                    "2. Ultra High Power Density Liquid Metal Cooled Inverter -",
-                    "Undergraduate research at OSU Center for High Performance Power Electronics. Focused on firmware development for optical temperature sensors and control firmware to prevent overheating in a 3-phase inverter system."
-                ];
-                typeOut(projectsContent, output);
+                fetch('projects.json')
+                    .then(res => res.json())
+                    .then(projects => {
+                        const projectsContent = ["Projects:", ""];
+                        projects.forEach((p, i) => {
+                            projectsContent.push(`${i + 1}. ${p.title} - `);
+                            projectsContent.push(p.description);
+                        });
+                        typeOut(projectsContent, output);
+                    })
+                    .catch(() => {
+                        typeOut(["Error: could not load projects."], output);
+                    });
             }
             else if(!resumeViewed)
             {
